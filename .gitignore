@@ -22,6 +22,12 @@ $RECYCLE.BIN/
 # JetBrains IDEs
 .idea/
 
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
 # Node.js
 node_modules/
 npm-debug.log*
