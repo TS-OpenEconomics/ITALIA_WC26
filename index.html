@@ -206,7 +206,7 @@
     padding: 10px 20px;
   }
   .hero-title {
-    font-family: 'Hedvig Letters Serif', Georgia, serif;
+    font-family: var(--fd);
     font-size: clamp(48px, 6.5vw, 88px);
     font-weight: 400;
     color: var(--white);
@@ -683,11 +683,11 @@
 </nav>
 
 <nav class="toc" aria-label="Indice sezione">
-  <div class="toc__dot active" data-label="Intro" data-s="hero" onclick="navTo('hero')"></div>
-  <div class="toc__dot" data-label="Sintesi" data-s="overview" onclick="navTo('overview')"></div>
-  <div class="toc__dot" data-label="Impatto Economico" data-s="economic" onclick="navTo('economic')"></div>
-  <div class="toc__dot" data-label="Impatto Sociale" data-s="social" onclick="navTo('social')"></div>
-  <div class="toc__dot" data-label="Metodologia" data-s="methodology" onclick="navTo('methodology')"></div>
+  <div class="toc__dot active" data-label="Intro" data-s="hero"></div>
+  <div class="toc__dot" data-label="Sintesi" data-s="overview"></div>
+  <div class="toc__dot" data-label="Impatto Economico" data-s="economic"></div>
+  <div class="toc__dot" data-label="Impatto Sociale" data-s="social"></div>
+  <div class="toc__dot" data-label="Metodologia" data-s="methodology"></div>
 </nav>
 
 <!-- HERO -->
@@ -1069,6 +1069,9 @@
 <script>
   const tocIds = ['hero', 'overview', 'economic', 'social', 'methodology'];
   const tocDots = Array.from(document.querySelectorAll('.toc__dot'));
+  const tocSections = tocIds
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
 
   function setActiveDot(id) {
     tocDots.forEach((dot) => {
@@ -1080,11 +1083,9 @@
     const threshold = window.innerHeight * 0.35;
     let currentId = tocIds[0];
 
-    tocIds.forEach((id) => {
-      const section = document.getElementById(id);
-      if (!section) return;
+    tocSections.forEach((section) => {
       const rect = section.getBoundingClientRect();
-      if (rect.top <= threshold) currentId = id;
+      if (rect.top <= threshold) currentId = section.id;
     });
 
     setActiveDot(currentId);
@@ -1097,8 +1098,12 @@
     setActiveDot(id);
   }
 
+  tocDots.forEach((dot) => {
+    dot.addEventListener('click', () => navTo(dot.dataset.s));
+  });
+
   window.addEventListener('scroll', updateActiveDot, { passive: true });
-  window.addEventListener('load', updateActiveDot);
+  window.addEventListener('DOMContentLoaded', updateActiveDot);
 </script>
 
 </body>
